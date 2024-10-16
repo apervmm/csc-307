@@ -49,8 +49,8 @@ const findUserByName = (name) => {
 
 const findUserByNameAndJob = (name, job) => {
   return users["users_list"].filter(
-    (user) => user["name"] === name && user["job"] === job
-  );
+    (user) => (name === undefined || user["name"] === name && user["job"] === job)
+);
 };
 
 app.get("/users", (req, res) => {

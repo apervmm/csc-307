@@ -73,8 +73,9 @@ app.get("/users", (req, res) => {
 });
 
 
-const findUserById = (id) =>
+const findUserById = (id) =>{
   users["users_list"].find((user) => user["id"] === id);
+}
 
 app.get("/users/:id", (req, res) => {
   const id = req.params["id"]; //or req.params.id
@@ -86,7 +87,13 @@ app.get("/users/:id", (req, res) => {
   }
 });
 
+const generateId = () => {
+  return Math.floor(Math.random() * 1000000)
+}
+
+
 const addUser = (user) => {
+  user.id = generateId()
   users["users_list"].push(user);
   return user;
 }
@@ -94,7 +101,7 @@ const addUser = (user) => {
 app.post("/users", (req, res) => {
   const userToAdd = req.body;
   const added = addUser(userToAdd);
-  res.status(201).json({ message: "User added", user: added })
+  res.status(201).json({ message: "User added", user: added})
 });
 
 
@@ -112,9 +119,9 @@ app.delete("/users/:id", (req, res) => {
   const deletedUser = deleteUser(userId);
 
   if (deletedUser !== undefined ) {
-    res.status(200).json({ message: "User deleted", user: deletedUser });
+    res.status(204).json({ message: "User deleted", user: deletedUser });
   } else {
-    res.status(404).json({ message: "User not found" });
+    res.status(404).json({ message: 'resource not found'});
   }
 });
 
